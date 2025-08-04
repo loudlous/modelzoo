@@ -1,6 +1,6 @@
 # CosyVoice 在 SDAA 上部署与推理 README
 
-> 适用场景：你有一块基于 **SDAA** 的新显卡（TecoAI 系列），需要在服务器上部署并离线推理 **CosyVoice (FunAudioLLM)**。本文记录从零搭建环境、下载模型、修补依赖、完成推理输出 `cosy_out.wav` 的完整流程，以及常见报错的快速修复方法。
+> 适用场景：一块基于 **SDAA** 的新显卡（TecoAI 系列），需要在服务器上部署并离线推理 **CosyVoice (FunAudioLLM)**。本文记录从零搭建环境、下载模型、修补依赖、完成推理输出 `cosy_out.wav` 的完整流程，以及常见报错的快速修复方法。
 
 ---
 
@@ -56,7 +56,7 @@ conda activate cosyvoice
 
 ### 1.2 安装 Torch-SDAA 生态
 
-> **版本必须与驱动/Runtime 对齐**（示例：Torch 2.4.0a0、Torch-SDAA 2.1.0）。请替换成你们实际的 whl 源/本地包路径。
+> **版本必须与驱动/Runtime 对齐**（示例：Torch 2.4.0a0、Torch-SDAA 2.1.0）。请替换成实际的 whl 源/本地包路径。
 
 ```bash
 pip uninstall -y torch torch_sdaa tecodnn tecoblas sdaart sdpti tecodnn_ext || true
@@ -135,14 +135,12 @@ huggingface-cli download FunAudioLLM/CosyVoice-300M-SFT \
 
 ```bash
 export SDAA_VISIBLE_DEVICES=0
-export LD_LIBRARY_PATH=/opt/tecoai/lib64:$LD_LIBRARY_PATH  # 根据你的 teco 库路径修改
+export LD_LIBRARY_PATH=/opt/tecoai/lib64:$LD_LIBRARY_PATH  # 根据 teco 库路径修改
 ```
 
 ---
 
 ## 5. 推理脚本 `infer_sdaa.py`
-
-> 已替你解决：tn/pynini 英文 FST 导致的报错、流式生成器返回、音频字段不一致、SDAA autocast 等问题。
 
 将下方脚本保存为：`/data/bigc-data/zh/CosyVoice/infer_sdaa.py`
 
@@ -415,8 +413,6 @@ conda env create -f cosyvoice_env.yaml
 * **跨语言**：`model.inference_cross_lingual(...)`
 * **语音转换 VC**：`model.inference_vc(source_speech_16k, prompt_speech_16k, ...)`
 
-如需对应脚本/接口或 WebUI/Gradio Demo，可再告诉我。
-
 ---
 
-**到此为止，你已经可以在 SDAA 上稳定地跑通 CosyVoice 了。祝使用愉快！** 🎧
+**到此为止，已经可以在 SDAA 上稳定地跑通 CosyVoice 了。祝使用愉快！** 🎧
